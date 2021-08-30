@@ -1,11 +1,9 @@
 /*
   FPGA Test Module
   Brief:
-    Success: BLINK_GOOD flashes at 1Hz on test board
-    Failure:
-      1) BLINK_GOOD is off => FPGA and potential MCU failure
-      2) BLINK_GOOD is on and not flashing => MCU failure
-
+    Success:
+      1) LED[0] flashes at 1 Hz on MAX1000 board
+      2) PB0 in the bar LED toggles at 1 Hz on MAX1000 shield
       
   Pin assignments:
     PIN_H6:  clk_in, 12MHz clock
