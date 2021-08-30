@@ -2,7 +2,7 @@
   FPGA Test Module
   Brief:
     Success:
-      1) LED[0] flashes at 1 Hz on MAX1000 board
+      1) LED1 flashes at 1 Hz on MAX1000 board
       2) PB0 in the bar LED toggles at 1 Hz on MAX1000 shield
       
   Pin assignments:
