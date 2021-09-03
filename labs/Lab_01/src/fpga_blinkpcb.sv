@@ -8,8 +8,9 @@
   Pin assignments:
     PIN_H6:  clk_in, 12MHz clock
     PIN_L12: blink_out, ~1Hz clock output to MCU (D2/PA10)
+    PIN_A8:  blink_out_copy, Mirror of clock output to MCU for debugging.
     PIN_J10: blink_echo, ~1Hz echoed clock input from MCU (D7/PA8)
-    PIN_A8:  led_out, BLINK_GOOD output
+    PIN_A9:  led_out, BLINK_GOOD output
   
   If the microcontroller has failed, the echoed clock will not appear on blink_echo,
   and mcu_out will remain high
@@ -18,13 +19,15 @@
 */
 
 module fpga_blinkpcb (
-              input logic clk_in,
-              input logic blink_echo,
+              input  logic clk_in,
+              input  logic blink_echo,
               output logic blink_out,
+              output logic blink_out_copy
               output logic led_out
               );
   
   assign blink_out = clk_divide[23];
+  assign blink_out_copy = clk_divide[23];
   assign led_out = blink_echo;
   
     
