@@ -31,7 +31,7 @@ module fpga_blinkpcb (
   logic [24:0] clk_divide;
   always @(posedge clk_in) 
   begin
-    clk_divide <= clk_divide + 1
+    clk_divide <= clk_divide + 1;
   end
   
 
