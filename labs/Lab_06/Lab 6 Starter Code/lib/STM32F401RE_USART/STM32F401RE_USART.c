@@ -5,11 +5,6 @@
 #include "STM32F401RE_GPIO.h"
 #include "STM32F401RE_RCC.h"
 
-/*
-    id2Port takes a USART_ID (index of USART peripheral) and returns a pointer
-    to a USART-sized chunk of memory at the correct base address for that
-    peripheral.
-*/
 USART_TypeDef * id2Port(uint8_t USART_ID){
     USART_TypeDef * USART;
     switch(USART_ID){
@@ -25,11 +20,7 @@ USART_TypeDef * id2Port(uint8_t USART_ID){
     return USART;
 }
 
-/*
-    initUSART sets up the USART peripheral and configures the pins, sets the 
-    appropriate configuration values, and enables the peripheral.
-*/
-USART_TypeDef * initUSART(int USART_ID){
+USART_TypeDef * initUSART(uint8_t USART_ID){
     RCC->AHB1ENR.GPIOAEN = 1; // Enable GPIO port A
 
     USART_TypeDef * USART = id2Port(USART_ID);
@@ -61,23 +52,23 @@ USART_TypeDef * initUSART(int USART_ID){
     USART->CR2.STOP = 0b00; // 0b00 corresponds to 1 stop bit
     USART->CR1.OVER8 = 0; // Set to 16 times sampling freq
 
-    // Set baud rate to 9600 bps
+    // Set baud rate to 125 kbps
     // Tx/Rx baud = (f_CK)/(8*(2-OVER8)*USARTDIV) = Tx/Rx baud = (f_CK)/(16*USARTDIV)
+    // f_CK = 84e6 Hz on APB2 (USART1) or 42e6 on APB1 (USART2)
+
+
     if(USART_ID == USART1_ID){
-      // f_CK = 84e6 Hz on APB2 (USART1)
-      // USARTDIV = 84e6/(16*BAUD_RATE) = 546.875
-      // DIV_Mantissa = 546 = 0x222
-      // DIV_Fraction = 0.875 = 14/16 = 0b1110
-        USART->BRR.DIV_Mantissa = 546;
-        USART->BRR.DIV_Fraction = 14;
+        USART->BRR.DIV_Mantissa = 42;
+        USART->BRR.DIV_Fraction = 0;
     }
     else if (USART_ID == USART2_ID){
-      // f_CK = 42e6 on APB1 (USART2)
-      // USARTDIV =42e6/(16*BAUD_RATE) = 273.4375
-      // DIV_Mantissa = 273 = 0x111
-      // DIV_Fraction = 0.4375 = 7/16 = 0b0111
-        USART->BRR.DIV_Mantissa = 273;
-        USART->BRR.DIV_Fraction = 7;
+      // For USART2
+      // 21 = 0x0015
+      // 0 = 0/8 = 0b0000
+      // DIV_Mantissa = 0x2A
+      // DIV_Fraction = 0b0000
+        USART->BRR.DIV_Mantissa = 21;
+        USART->BRR.DIV_Fraction = 0;
     }
 
     USART->CR1.TE = 1; // Enable transmission
@@ -85,12 +76,6 @@ USART_TypeDef * initUSART(int USART_ID){
 
     return USART;
 }
-
-/*
-    sendChar takes USART_ID (index of USART peripheral) and an 8-bit data packet
-    and outputs the data packet over the serial interface.
-    It should wait for the transmission to be complete to exit the function.
-*/
 
 void sendChar(USART_TypeDef * USART, uint8_t data){
     USART->DR.DR = data;
