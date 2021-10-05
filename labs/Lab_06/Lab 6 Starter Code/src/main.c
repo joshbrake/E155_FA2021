@@ -4,7 +4,7 @@
 #include "STM32F401RE_RCC.h"
 #include "STM32F401RE_USART.h"
 
-#define USART_ID USART2_ID
+#define USART_ID USART1_ID
 
 int main(void) {
     // Configure flash and clock
