@@ -2,9 +2,9 @@
 // GPIO blink LED with clock configuration
 // Josh Brake
 // jbrake@hmc.edu
-// 9/27/21
+// 9/28/21
 
-#include "STM32F401RE_GPIO.h"
+#include "STM32F401RE_GPIOA.h"
 #include "STM32F401RE_RCC.h"
 #include "STM32F401RE_FLASH.h"
 
@@ -20,15 +20,20 @@ void ms_delay(int ms) {
 }
 
 int main(void) {
-    /* TODO: Configure APB prescalers
+    configureFlash();
+
+    /* Configure APB prescalers
         1. Set APB2 (high-speed bus) prescaler to no division
         2. Set APB1 (low-speed bus) to divide by 2.
     */
+    RCC->CFGR.PPRE2 = 0b000;
+    RCC->CFGR.PPRE1 = 0b100;
 
-    // TODO: Call configureClock() (declared in STM32F401RE_RCC.h)
+    // Call configureClock() (declared in STM32F401RE_RCC.h)
     configureClock();
 
-    // TODO: Turn on clock to GPIOA using GPIOA bitfield structure
+    // Turn on clock to GPIOA
+    RCC->AHB1ENR.GPIOAEN = 1;
 
     // Set LED_PIN as output
     pinMode(LED_PIN, GPIO_OUTPUT);

@@ -1,5 +1,5 @@
-// STM32F401RE_GPIOA.c
-// Source code for GPIOA functions
+// STM32F401RE_GPIO.c
+// Source code for GPIO functions
 
 #include "STM32F401RE_GPIOA.h"
 
@@ -10,11 +10,11 @@ void pinMode(int pin, int function) {
             break;
         case GPIO_OUTPUT:
             GPIOA->MODER |= (0b1 << 2*pin);
-            GPIOA->MODER &= ~(0b1 << 2*pin+1);
+            GPIOA->MODER &= ~(0b1 << (2*pin+1));
             break;
         case GPIO_ALT:
             GPIOA->MODER &= ~(0b1 << 2*pin);
-            GPIOA->MODER |= (0b1 << 2*pin+1);
+            GPIOA->MODER |= (0b1 << (2*pin+1));
             break;
         case GPIO_ANALOG:
             GPIOA->MODER |= (0b11 << 2*pin);
