@@ -10,7 +10,7 @@
     to a USART-sized chunk of memory at the correct base address for that
     peripheral.
 */
-USART_TypeDef * id2Port(USART_ID){
+USART_TypeDef * id2Port(int USART_ID){
     USART_TypeDef * USART;
     switch(USART_ID){
         case(USART1_ID) :
@@ -40,19 +40,19 @@ USART_TypeDef * initUSART(int USART_ID){
             // Configure pin modes as ALT function
             // USART1_TX on PA9
             // USART1_RX on PA10
-            pinMode(GPIOA, GPIO_PA9, GPIO_ALT);
-            pinMode(GPIOA, GPIO_PA10, GPIO_ALT);
+            pinMode(GPIOA, 9, GPIO_ALT);
+            pinMode(GPIOA, 10, GPIO_ALT);
 
             GPIOA->AFRH |= (0b111 << 4*2) | (0b111 << 4*1);
             break;
         case USART2_ID :
-            RCC->APB1ENR |= (1 << 17); // Set USART1EN
+            RCC->APB1ENR |= (1 << 17); // Set USART2EN
 
             // Configure pin modes as ALT function
             // USART2_TX on PA2
             // USART2_RX on PA3
-            pinMode(GPIOA, GPIO_PA2, GPIO_ALT);
-            pinMode(GPIOA, GPIO_PA3, GPIO_ALT);
+            pinMode(GPIOA, 2, GPIO_ALT);
+            pinMode(GPIOA, 3, GPIO_ALT);
 
             // Configure correct alternate functions (AF07)
             GPIOA->AFRL |= (0b111 << 4*3) | (0b111 << 4*2);
@@ -67,29 +67,29 @@ USART_TypeDef * initUSART(int USART_ID){
        * Baud rate of 9.6 Kbps (9600 baud)
     */
 
-    USART->CR1.UE = ;     // 
-    USART->CR1.M = ;      //
-    USART->CR2.STOP = ;   //
-    USART->CR1.OVER8 = ;  //
+    USART->CR1.UE = ;     // Enable USART
+    USART->CR1.M = ;      // 8 bits per frame
+    USART->CR2.STOP = ;   // 1 stop bit
+    USART->CR1.OVER8 = ;  // oversampling by 16
 
     // Set baud rate to 9600 bps
     // Tx/Rx baud = (f_CK)/(8*(2-OVER8)*USARTDIV) = Tx/Rx baud = (f_CK)/(16*USARTDIV)
     if(USART_ID == USART1_ID){
-      // TODO: Finish this
-      // f_CK = 84e6 Hz on APB2 (USART1)
-      // USARTDIV = 84e6/(16*BAUD_RATE) = XX
-      // DIV_Mantissa = XX 
-      // DIV_Fraction = XX
-        USART->BRR.DIV_Mantissa = ;
-        USART->BRR.DIV_Fraction = ;
+      // // TODO: Finish this
+      // // f_CK = 84e6 Hz on APB2 (USART1)
+      // // USARTDIV = 84e6/(16*BAUD_RATE) = XX
+      // // DIV_Mantissa = XX 
+      // // DIV_Fraction = XX
+      //   USART->BRR.DIV_Mantissa = ;
+      //   USART->BRR.DIV_Fraction = ;
     }
     else if (USART_ID == USART2_ID){
       // f_CK = 42e6 on APB1 (USART2)
-      // USARTDIV =42e6/(16*BAUD_RATE) = XX
-      // DIV_Mantissa = XX
-      // DIV_Fraction = XX
+      // USARTDIV = 42e6/(16*BAUD_RATE) = 273.4375
+      // DIV_Mantissa = 273
+      // DIV_Fraction = 7
         USART->BRR.DIV_Mantissa = ;
-        USART->BRR.DIV_Fraction = ;
+        USART->BRR.DIV_Fraction = ;  // 0b0111
     }
 
    // TODO: Enable transmission and reception
@@ -108,5 +108,6 @@ USART_TypeDef * initUSART(int USART_ID){
 */
 void sendChar(USART_TypeDef * USART, uint8_t data){
     // TODO: Add code to send packet and wait for transmission to complete
-
+    USART->DR.DR = data;
+    while(!USART->SR.TC); // USART->SR.TC != 1
 }

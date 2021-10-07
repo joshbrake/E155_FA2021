@@ -101,6 +101,6 @@ typedef struct {
 ///////////////////////////////////////////////////////////////////////////////
 
 USART_TypeDef * initUSART(int USART_ID);
-USART_TypeDef * sendChar(int USART_ID, uint8_t data);
+void sendChar(USART_TypeDef * USART, uint8_t data);
 
 #endif
