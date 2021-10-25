@@ -56,12 +56,7 @@ typedef struct {
   volatile uint32_t OVR         : 1;
   volatile uint32_t BSY         : 1;
   volatile uint32_t FRE         : 1;
-  volatile uint32_t DFF         : 1;
-  volatile uint32_t CRCNEXT     : 1;
-  volatile uint32_t CRCEN       : 1;
-  volatile uint32_t BIDIOE      : 1;
-  volatile uint32_t BIDIMODE    : 1;
-  volatile uint32_t             : 16;
+  volatile uint32_t             : 23;
 } SPI_SR_bits;
 
 typedef struct {
