@@ -85,7 +85,7 @@ typedef struct {
 ///////////////////////////////////////////////////////////////////////////////
 
 /* Enables the SPI peripheral and intializes its clock speed (baud rate), polarity, and phase. */
-void spiInit(uint32_t clkdivide, uint32_t cpol, uint32_t ncpha);
+void spiInit(int clkdivide, int cpol, int cpha);
 
 /* Transmits a character (1 byte) over SPI and returns the received character.
  *    -- send: the character to send over SPI
