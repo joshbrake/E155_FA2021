@@ -42,6 +42,8 @@ module testbench();
     initial begin
       i = 0;
       load = 1'b1;
+      // set delay to true
+      delay = 1;
     end 
     
 	assign comb = {plaintext, key};
