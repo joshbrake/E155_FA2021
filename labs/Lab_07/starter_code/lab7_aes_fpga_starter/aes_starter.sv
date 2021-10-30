@@ -11,6 +11,7 @@
 
 module testbench();
     logic clk, load, done, sck, sdi, sdo;
+    logic delay;
     logic [127:0] key, plaintext, cyphertext, expected;
 	  logic [255:0] comb;
     logic [8:0] i;
